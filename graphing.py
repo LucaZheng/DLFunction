@@ -198,7 +198,7 @@ def compare_roc_curves(models_output, true_labels, bird_name):
     # create chart and save it for later model experiment
 def create_chart(history, pred_labels, model, true, save=True, csv_path='/Users/aristo/Desktop/final dissertation', csv_name='model', report_name='model'):
 
-    # Create dic for birds name mapping
+  # Create dic for birds name mapping
   bird_dics = {'bermuda_petrel':0,
   'black_winged_petrel':1,
   'cooks_petrel':2,
