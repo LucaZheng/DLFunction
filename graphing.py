@@ -192,7 +192,7 @@ def compare_roc_curves(models_output, true_labels, bird_name):
     plt.title(f'{bird_name} ROC')
     plt.legend(loc='best')
     plt.show()
-    
+     
     
     
     # create chart and save it for later model experiment
