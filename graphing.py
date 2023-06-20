@@ -164,23 +164,23 @@ def compare_roc_curves(models_output, true_labels, bird_name):
 
     # Calculate and plot the ROC curve for each model
   for model_name, y_pred_prob in models_output.items():
-      # Convert the true labels to a binary format for this species
-      true_binary = [1 if label == bird_name else 0 for label in true_labels]
+    # Convert the true labels to a binary format for this species
+    true_binary = [1 if label == bird_name else 0 for label in true_labels]
 
       # Get the index for the bird species
-      bird_index = bird_dic[bird_name]
+    bird_index = bird_dic[bird_name]
 
       # Calculate the ROC curve
-      fpr, tpr, thresholds = roc_curve(true_binary, y_pred_prob[:, bird_index])
+    fpr, tpr, thresholds = roc_curve(true_binary, y_pred_prob[:, bird_index])
 
-      # Calculate the AUC
-      auc_score = roc_auc_score(true_binary, y_pred_prob[:, bird_index])
+    # Calculate the AUC
+    auc_score = roc_auc_score(true_binary, y_pred_prob[:, bird_index])
 
-      # Store the model name, AUC score, and ROC curve data for later use
-      legend_data.append((model_name, auc_score, fpr, tpr))
+    # Store the model name, AUC score, and ROC curve data for later use
+    legend_data.append((model_name, auc_score, fpr, tpr))
 
   # Sort the legend data in descending order based on AUC score
-  legend_data.sort(key=lambda x: x[1], reverse=True)
+    legend_data.sort(key=lambda x: x[1], reverse=True)
 
     # Add each ROC curve to the plot
   for model_name, auc_score, fpr, tpr in legend_data:
