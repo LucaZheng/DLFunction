@@ -136,7 +136,8 @@ def plot_rocau_mul(pred_labels, pred, true, model_name, show_all=None, show_micr
     
     
     # compare different model with the same class
-    def compare_roc_curves(models_output, true_labels, bird_name):
+  
+def compare_roc_curves(models_output, true_labels, bird_name):
     """
     models_output: a dictionary that contains model names as keys and predicted probabilities as values
     true_labels: true labels (ground truth)
@@ -195,7 +196,7 @@ def plot_rocau_mul(pred_labels, pred, true, model_name, show_all=None, show_micr
     
     
     # create chart and save it for later model experiment
-    def create_chart(history, pred_labels, model, true, save=True, csv_path='/Users/aristo/Desktop/final dissertation', csv_name='model', report_name='model'):
+  def create_chart(history, pred_labels, model, true, save=True, csv_path='/Users/aristo/Desktop/final dissertation', csv_name='model', report_name='model'):
 
     # Create dic for birds name mapping
     bird_dics = {'bermuda_petrel':0,
