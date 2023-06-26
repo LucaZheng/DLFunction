@@ -103,7 +103,7 @@ def create_pipeline(df, load_function, height, width, augment_layer, augment=Fal
     if augment:
         ds = ds.map(lambda x, y: (augment_layer(load_function(x,height,width)), y), num_parallel_calls=AUTOTUNE)
     else:
-        ds = ds.map(lambda x, y: (load_function(x), y), num_parallel_calls=AUTOTUNE)
+        ds = ds.map(lambda x, y: (load_function(x,height,width), y), num_parallel_calls=AUTOTUNE)
 
     # Apply shuffling based on condition
     if shuffle:
