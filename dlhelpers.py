@@ -74,7 +74,7 @@ def _load(image_path, height, width):
 def encode_labels(labels, encode_depth=24):
     return tf.one_hot(labels, depth=encode_depth).numpy()
 
-def create_pipeline(df, load_function, augment=False, batch_size=32, shuffle=False, cache=None, prefetch=False):
+def create_pipeline(df, load_function, augment=False, augment_layer, batch_size=32, shuffle=False, cache=None, prefetch=False):
     '''
     Generates an input pipeline using the tf.data API given a Pandas DataFrame and image loading function.
 
@@ -101,7 +101,7 @@ def create_pipeline(df, load_function, augment=False, batch_size=32, shuffle=Fal
     # Map augmentation layer and load function to dataset inputs if augment is True
     # Else map only the load function
     if augment:
-        ds = ds.map(lambda x, y: (augmentation_layer(load_function(x)), y), num_parallel_calls=AUTOTUNE)
+        ds = ds.map(lambda x, y: (augment_layer(load_function(x)), y), num_parallel_calls=AUTOTUNE)
     else:
         ds = ds.map(lambda x, y: (load_function(x), y), num_parallel_calls=AUTOTUNE)
 
