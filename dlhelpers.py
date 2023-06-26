@@ -91,7 +91,7 @@ def create_pipeline(df, load_function, augment_layer, augment=False, batch_size=
         - dataset: (tf.data.Dataset) -> dataset input pipeline used to train a TensorFlow model
     '''
     # Get image paths and labels from DataFrame
-    #image_paths = df.image_path
+    image_paths = df.image_path
     image_labels = encode_labels(df.label_encoded)
     AUTOTUNE = tf.data.AUTOTUNE
 
