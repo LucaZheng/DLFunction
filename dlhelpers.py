@@ -43,6 +43,34 @@ from tensorflow.keras import regularizers
 
 """# generate pipeline for images dataset"""
 
+def generate_labels(image_paths):
+    return [_.split('/')[-2:][0] for _ in image_paths]
+
+def build_df(image_paths, labels):
+    # Create dataframe
+    df = pd.DataFrame({
+        'image_path': image_paths,
+        'label': generate_labels(labels)
+    })
+    
+    # Shuffle and return df
+    return df.sample(frac=1, random_state=CFG.SEED).reset_index(drop=True)
+
+def _load(image_path):
+    # Read and decode an image file to a uint8 tensor
+    image = tf.io.read_file(image_path)
+    image = tf.io.decode_jpeg(image, channels=3)
+    
+    # Resize image
+    image = tf.image.resize(image, [CFG.HEIGHT, CFG.WIDTH],
+                            method=tf.image.ResizeMethod.LANCZOS3)
+    
+    # Convert image dtype to float32 and NORMALIZE!!!
+    image = tf.cast(image, tf.float32)/255.
+    
+    # Return image
+    return image
+
 def encode_labels(labels, encode_depth=24):
     return tf.one_hot(labels, depth=encode_depth).numpy()
 
