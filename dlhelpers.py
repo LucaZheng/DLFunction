@@ -74,7 +74,7 @@ def _load(image_path, height, width):
 def encode_labels(labels, encode_depth=24):
     return tf.one_hot(labels, depth=encode_depth).numpy()
 
-def create_pipeline(df, load_function, augment_layer, df, augment=False, batch_size=32, shuffle=False, cache=None, prefetch=False):
+def create_pipeline(df, load_function, augment_layer, image_paths, augment=False, batch_size=32, shuffle=False, cache=None, prefetch=False):
     '''
     Generates an input pipeline using the tf.data API given a Pandas DataFrame and image loading function.
 
@@ -91,7 +91,7 @@ def create_pipeline(df, load_function, augment_layer, df, augment=False, batch_s
         - dataset: (tf.data.Dataset) -> dataset input pipeline used to train a TensorFlow model
     '''
     # Get image paths and labels from DataFrame
-    image_paths = df.image_path
+    #image_paths = df.image_path
     image_labels = encode_labels(df.label_encoded)
     AUTOTUNE = tf.data.AUTOTUNE
 
