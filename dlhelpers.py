@@ -46,7 +46,7 @@ from tensorflow.keras import regularizers
 def generate_labels(image_paths):
     return [_.split('/')[-2:][0] for _ in image_paths]
 
-def build_df(image_paths, labels, CFG=CFG):
+def build_df(image_paths, labels, seed):
     # Create dataframe
     df = pd.DataFrame({
         'image_path': image_paths,
@@ -54,15 +54,15 @@ def build_df(image_paths, labels, CFG=CFG):
     })
     
     # Shuffle and return df
-    return df.sample(frac=1, random_state=CFG.SEED).reset_index(drop=True)
+    return df.sample(frac=1, random_state=seed).reset_index(drop=True)
 
-def _load(image_path, CFG=CFG):
+def _load(image_path, height, width):
     # Read and decode an image file to a uint8 tensor
     image = tf.io.read_file(image_path)
     image = tf.io.decode_jpeg(image, channels=3)
     
     # Resize image
-    image = tf.image.resize(image, [CFG.HEIGHT, CFG.WIDTH],
+    image = tf.image.resize(image, [height, width],
                             method=tf.image.ResizeMethod.LANCZOS3)
     
     # Convert image dtype to float32 and NORMALIZE!!!
