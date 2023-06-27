@@ -47,7 +47,7 @@ def build_df(image_paths, labels, seed):
     # Shuffle and return df
     return df.sample(frac=1, random_state=seed).reset_index(drop=True)
 
-def _load(image_path, height, width, if_vt=True):
+def _load(image_path, height, width):
     # Read and decode an image file to a uint8 tensor
     image = tf.io.read_file(image_path)
     image = tf.io.decode_jpeg(image, channels=3)
@@ -55,11 +55,6 @@ def _load(image_path, height, width, if_vt=True):
     # Resize image
     image = tf.image.resize(image, [height, width],
                             method=tf.image.ResizeMethod.LANCZOS3)
-
-    # Convert image dtype to float32 and NORMALIZE!!!
-    if if_vt:
-        image = tf.cast(image, tf.float32)/255.
-    
     # Return image
     return image
 
@@ -93,11 +88,16 @@ def create_pipeline(df, load_function, preprocess_function, height, width, augme
     # Map augmentation layer and load function to dataset inputs if augment is True
     # Else map only the load function
     if augment:
-        ds = ds.map(lambda x, y: (augment_layer(load_function(x,height,width,if_vt)), y), num_parallel_calls=AUTOTUNE)
+        ds = ds.map(lambda x, y: (augment_layer(load_function(x,height,width)), y), num_parallel_calls=AUTOTUNE)
+        if if_vt:
+            ds = ds.map(lambda x, y: (tf.cast(x, tf.float32)/255., y), num_parallel_calls=AUTOTUNE)
         if if_vt == False:
             ds = ds.map(lambda x, y: (preprocess_function(x), y), num_parallel_calls=AUTOTUNE)
+            # Convert image dtype to float32 and NORMALIZE!!!
     else:
-        ds = ds.map(lambda x, y: (load_function(x,height,width,if_vt), y), num_parallel_calls=AUTOTUNE)
+        ds = ds.map(lambda x, y: (load_function(x,height,width), y), num_parallel_calls=AUTOTUNE)
+        if if_vt:
+            ds = ds.map(lambda x, y: (tf.cast(x, tf.float32)/255., y), num_parallel_calls=AUTOTUNE)
         if if_vt == False:
             ds = ds.map(lambda x, y: (preprocess_function(x), y), num_parallel_calls=AUTOTUNE)
 
