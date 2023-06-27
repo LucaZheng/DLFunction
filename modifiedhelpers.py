@@ -57,7 +57,7 @@ def _load(image_path, height, width, if_vt=True):
                             method=tf.image.ResizeMethod.LANCZOS3)
 
     # Convert image dtype to float32 and NORMALIZE!!!
-    if_vt:
+    if if_vt:
         image = tf.cast(image, tf.float32)/255.
     
     # Return image
