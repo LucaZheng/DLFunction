@@ -58,7 +58,7 @@ def _load(image_path, height, width):
     # Return image
     return image
 
-def encode_labels(labels, encode_depth=24):
+def encode_labels(labels, encode_depth=9):
     return tf.one_hot(labels, depth=encode_depth).numpy()
 
 def create_pipeline(df, load_function, preprocess_function, height, width, augment_layer, augment=False, batch_size=32, if_vt=True, shuffle=False, cache=None, prefetch=False):
